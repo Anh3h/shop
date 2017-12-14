@@ -1,8 +1,10 @@
 package com.courge.shop.dao.implementation;
 
+import com.courge.shop.Exception.BadRequestException;
 import com.courge.shop.dao.CustomerDao;
 import com.courge.shop.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,10 +35,12 @@ public class JdbcCustomerDao implements CustomerDao {
         Object[] sqlParameters = { newCustomer.getUuid(), newCustomer.getFirstName(),
                 newCustomer.getLastName(), newCustomer.getEmail(), newCustomer.getTelephone() };
 
-        if (this.jdbcTemplate.update(sql, sqlParameters) > 0) {
+        try {
+            this.jdbcTemplate.update(sql, sqlParameters);
             return newCustomer;
+        } catch ( DataAccessException ex ){
+            throw BadRequestException.create(ex.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -45,8 +49,14 @@ public class JdbcCustomerDao implements CustomerDao {
         int pageSize = pageable.getPageSize();
         int offset = (pageable.getPageNumber() - 1) * pageSize;
         String sql = "SELECT * FROM customer WHERE is_available = true LIMIT ?, ? ";
-        return new PageImpl<>(this.jdbcTemplate.query(sql, new Object[]{offset, pageSize}, new CustomerMapper()),
-                pageable, count());
+        try {
+            return new PageImpl<>(this.jdbcTemplate.query(sql, new Object[]{offset, pageSize}, new CustomerMapper()),
+                    pageable, count());
+        } catch (DataAccessException ex)  {
+            BadRequestException.create(ex.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -57,6 +67,8 @@ public class JdbcCustomerDao implements CustomerDao {
             return  customer;
         } catch (EmptyResultDataAccessException e) {
             return null;
+        } catch (DataAccessException ex) {
+            throw BadRequestException.create(ex.getMessage());
         }
     }
 
@@ -90,20 +102,24 @@ public class JdbcCustomerDao implements CustomerDao {
         Object[] sqlParameters = { updatedCustomer.getFirstName(), updatedCustomer.getLastName(),
                 updatedCustomer.getEmail(), updatedCustomer.getTelephone(), updatedCustomer.getUuid() };
 
-        if (this.jdbcTemplate.update(sql, sqlParameters) > 0) {
+        try {
+            this.jdbcTemplate.update(sql, sqlParameters);
             return updatedCustomer;
+        } catch (DataAccessException ex) {
+            throw BadRequestException.create(ex.getMessage());
         }
-        return null;
     }
 
     @Override
     public String deleteCustomer(String uuid) {
         String sql = "UPDATE customer SET is_available = false WHERE uuid = ?";
 
-        if (this.jdbcTemplate.update(sql, uuid) > 0) {
+        try{
+            this.jdbcTemplate.update(sql, uuid);
             return uuid;
+        } catch (DataAccessException ex){
+            throw BadRequestException.create(ex.getMessage());
         }
-        return null;
     }
 
     private Integer count(){

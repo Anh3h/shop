@@ -12,7 +12,7 @@ public class Customer implements Serializable {
 
     private static final long serialVersionUID = 4678852901357132238L;
 
-    @NonNull private String uuid;
+    private String uuid;
     @NonNull private String firstName;
     @NonNull private String lastName;
     @NonNull private String email;

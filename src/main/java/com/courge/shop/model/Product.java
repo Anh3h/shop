@@ -8,7 +8,7 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class Product {
 
-    @NonNull private String uuid;
+    private String uuid;
     @NonNull private String name;
     @NonNull private Double price;
     @NonNull private Long amount;

@@ -1,8 +1,10 @@
 package com.courge.shop.dao.implementation;
 
+import com.courge.shop.Exception.BadRequestException;
 import com.courge.shop.dao.ProductDao;
 import com.courge.shop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,10 +32,12 @@ public class JdbcProductDao implements ProductDao {
         Object[] sqlParameters = { newProduct.getUuid(), newProduct.getName(),
                 newProduct.getPrice(), newProduct.getAmount() };
 
-        if (this.jdbcTemplate.update(sql, sqlParameters) > 0) {
+        try {
+            this.jdbcTemplate.update(sql, sqlParameters);
             return newProduct;
+        } catch (DataAccessException ex) {
+            throw BadRequestException.create(ex.getMessage());
         }
-        return null;
     }
 
     @Override
@@ -41,8 +45,14 @@ public class JdbcProductDao implements ProductDao {
         int pageSize = pageable.getPageSize();
         int offset = (pageable.getPageNumber() - 1) * pageSize;
         String sql = "SELECT * FROM product WHERE is_available = true LIMIT ?, ? ";
-        return new PageImpl<>(this.jdbcTemplate.query(sql, new Object[]{offset, pageSize}, new ProductMapper()),
-                pageable, count());
+        try {
+            return new PageImpl<>(this.jdbcTemplate.query(sql, new Object[]{offset, pageSize}, new ProductMapper()),
+                    pageable, count());
+        } catch (DataAccessException ex) {
+            BadRequestException.create(ex.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -53,6 +63,8 @@ public class JdbcProductDao implements ProductDao {
             return product;
         } catch (EmptyResultDataAccessException e) {
             return null;
+        } catch (DataAccessException ex) {
+            throw BadRequestException.create(ex.getMessage());
         }
     }
 
@@ -74,20 +86,25 @@ public class JdbcProductDao implements ProductDao {
         Object[] sqlParameters = {updatedProduct.getName(),
                 updatedProduct.getPrice(), updatedProduct.getAmount(), updatedProduct.getUuid()};
 
-        if (this.jdbcTemplate.update(sql, sqlParameters) > 0) {
+        try {
+            this.jdbcTemplate.update(sql, sqlParameters);
             return updatedProduct;
+        } catch (DataAccessException ex) {
+            throw BadRequestException.create(ex.getMessage());
         }
-        return null;
     }
 
     @Override
     public String deleteProduct(String uuid) {
         String sql = "UPDATE product SET is_available = false WHERE uuid = ?";
 
-        if (this.jdbcTemplate.update(sql, uuid) > 0) {
+        try {
+            this.jdbcTemplate.update(sql, uuid);
             return uuid;
+        } catch (DataAccessException ex) {
+            throw  BadRequestException.create(ex.getMessage());
         }
-        return null;
+
     }
 
     private Integer count(){

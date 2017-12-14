@@ -1,9 +1,10 @@
 package com.courge.shop.controller;
 
+import com.courge.shop.Exception.BadRequestException;
+import com.courge.shop.Exception.NotFoundServiceException;
 import com.courge.shop.model.Product;
 import com.courge.shop.service.command.ProductCommand;
 import com.courge.shop.service.query.ProductQuery;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,23 +30,24 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<Product> createProduct(@RequestBody Product product ) {
         Product createdProduct = this.productCommand.createProductCommand(product);
-        if ( createdProduct == null ){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
     @RequestMapping ( method = RequestMethod.GET,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> getProducts(@RequestParam("page") int page,
-                                                       @RequestParam("size") int size) {
-        if (page <= 0 || size <= 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> getProducts(@RequestParam(value = "page", required = false) Integer page,
+                                                       @RequestParam(value = "size", required = false) Integer size) {
+        if (page == null || size == null) {
+            page = 1;
+            size = 50;
+        } else if ( page <= 0 || size <= 0 ) {
+            throw BadRequestException.create("Invalid page number: {0} or page size: {1} value", page, size);
         }
+
         Page<Product> products = this.productQuery.findAll(page, size);
         if (page > products.getTotalPages()) {
-            return new ResponseEntity<>(this.errorMessage(), HttpStatus.NOT_FOUND);
+            throw BadRequestException.create("Page number {0} should not be greater that total number of pages", page);
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
@@ -55,9 +57,8 @@ public class ProductController {
             produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<Object> getProduct( @PathVariable("productId") String productId ) {
         Product product = this.productQuery.findById(productId);
-
         if (product == null ) {
-            return new ResponseEntity<>(this.errorMessage(), HttpStatus.NOT_FOUND);
+            throw NotFoundServiceException.create("Product with id:{0} does not exist", productId);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -65,12 +66,12 @@ public class ProductController {
     @RequestMapping( value = "/{productId}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> updateProduct( @RequestBody Product product ) {
-        Product updatedProduct= this.productCommand.updateProductCommand(product);
-
-        if ( updatedProduct == null ){
-            return new ResponseEntity<>(this.errorMessage(), HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> updateProduct( @RequestBody Product product,
+                                                 @PathVariable("productId") String productId ) {
+        if (this.productQuery.findById(productId) == null) {
+            throw NotFoundServiceException.create("Product with id:{} does not exist", productId);
         }
+        Product updatedProduct= this.productCommand.updateProductCommand(product);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
@@ -80,13 +81,6 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct( @PathVariable("productId") String productId ) {
         this.productCommand.deleteProductCommand(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    Map<String, String> errorMessage(){
-        Map<String, String> errorMsg = new HashMap<>();
-        errorMsg.put("code", "404");
-        errorMsg.put("message", "Product not found");
-        return errorMsg;
     }
 
 }
