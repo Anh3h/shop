@@ -12,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("api/v1/customers")
 public class CustomerController {
@@ -34,9 +31,8 @@ public class CustomerController {
     }
 
     @RequestMapping ( method = RequestMethod.GET,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> getCustomers( @RequestParam(value = "page", required = false) Integer page,
+    public ResponseEntity<Page<Customer>> getCustomers( @RequestParam(value = "page", required = false) Integer page,
                                                         @RequestParam(value = "size", required = false) Integer size) {
         if( page == null || size == null ) {
             page = 1;
@@ -47,15 +43,14 @@ public class CustomerController {
 
         Page<Customer> customers = this.customerQuery.findAll(page, size);
         if (page > customers.getTotalPages()) {
-            throw BadRequestException.create("Page number {0} should not be greater that total number of pages", page);
+            throw NotFoundServiceException.create("Page number does not exist");
         }
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
     @RequestMapping( value = "/{customerId}", method = RequestMethod.GET,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> getCustomer( @PathVariable("customerId") String customerId ) {
+    public ResponseEntity<Customer> getCustomer( @PathVariable("customerId") String customerId ) {
         Customer customer = this.customerQuery.findById(customerId);
         if (customer == null ) {
             throw NotFoundServiceException.create("Customer with id: {0} does not exist", customerId);
@@ -66,7 +61,7 @@ public class CustomerController {
     @RequestMapping( value = "/{customerId}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> updateCustomer( @RequestBody Customer customer,
+    public ResponseEntity<Customer> updateCustomer( @RequestBody Customer customer,
                                                   @PathVariable("customerId") String customerId ) {
         if ( this.customerQuery.findById(customerId) == null ){
             throw NotFoundServiceException.create("Customer with id: {0} does not exist.", customerId);
@@ -76,9 +71,8 @@ public class CustomerController {
     }
 
     @RequestMapping( value = "/{customerId}", method = RequestMethod.DELETE,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Customer> deleteCustomer( @PathVariable("customerId") String customerId ) {
+    public ResponseEntity<HttpStatus> deleteCustomer( @PathVariable("customerId") String customerId ) {
         this.customerCommand.deleteCustomerCommand(customerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

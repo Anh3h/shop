@@ -1,0 +1,29 @@
+18-12-2017 04:18:28.755 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 7969 (started by courage in /home/courage/shop)
+18-12-2017 04:18:28.802 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 04:18:28.803 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 04:18:41.864 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarted - Started ShopApplicationTests in 13.437 seconds (JVM running for 15.741)
+18-12-2017 04:18:46.272 [main] INFO  com.courge.shop.ShopApplication.logStarting - Starting ShopApplication on courage-Inspiron-3542 with PID 8020 (/home/courage/shop/build/libs/shop-0.0.1-SNAPSHOT.jar started by courage in /home/courage/shop)
+18-12-2017 04:18:46.290 [main] DEBUG com.courge.shop.ShopApplication.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 04:18:46.294 [main] INFO  com.courge.shop.ShopApplication.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 04:19:00.193 [main] INFO  com.courge.shop.ShopApplication.logStarted - Started ShopApplication in 14.915 seconds (JVM running for 16.854)
+18-12-2017 05:03:18.506 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 10772 (started by root in /home/courage/shop)
+18-12-2017 05:03:18.576 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 05:03:18.579 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 05:03:36.025 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarted - Started ShopApplicationTests in 18.304 seconds (JVM running for 21.381)
+18-12-2017 09:54:14.808 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 17223 (started by root in /home/courage/shop)
+18-12-2017 09:54:14.826 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 09:54:14.827 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 09:54:50.703 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 17314 (started by root in /home/courage/shop)
+18-12-2017 09:54:50.705 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 09:54:50.709 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 09:55:06.194 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarted - Started ShopApplicationTests in 15.942 seconds (JVM running for 17.878)
+18-12-2017 10:00:06.820 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 17772 (started by root in /home/courage/shop)
+18-12-2017 10:00:06.837 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 10:00:06.837 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 10:00:19.909 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarted - Started ShopApplicationTests in 13.548 seconds (JVM running for 15.985)
+18-12-2017 10:16:53.463 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 19182 (started by root in /home/courage/shop)
+18-12-2017 10:16:53.487 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 10:16:53.487 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default
+18-12-2017 10:28:50.483 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStarting - Starting ShopApplicationTests on courage-Inspiron-3542 with PID 19707 (started by root in /home/courage/shop)
+18-12-2017 10:28:50.526 [Test worker] DEBUG com.courge.shop.ShopApplicationTests.logStarting - Running with Spring Boot v1.5.9.RELEASE, Spring v4.3.13.RELEASE
+18-12-2017 10:28:50.526 [Test worker] INFO  com.courge.shop.ShopApplicationTests.logStartupProfileInfo - No active profile set, falling back to default profiles: default

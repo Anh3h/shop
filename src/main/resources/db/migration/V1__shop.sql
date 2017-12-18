@@ -9,15 +9,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema shop
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `shop` DEFAULT CHARACTER SET utf8 ;
-USE `shop` ;
-
--- -----------------------------------------------------
 -- Table `shop`.`customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shop`.`customer` (
+CREATE TABLE IF NOT EXISTS `customer` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `uuid` VARCHAR(255) NOT NULL,
   `first_name` VARCHAR(255) NOT NULL,
@@ -35,7 +29,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `shop`.`product`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `shop`.`product` (
+CREATE TABLE IF NOT EXISTS `product` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `uuid` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NOT NULL,

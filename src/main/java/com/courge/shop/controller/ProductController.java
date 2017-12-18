@@ -12,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("api/v1/products")
 public class ProductController {
@@ -34,9 +31,8 @@ public class ProductController {
     }
 
     @RequestMapping ( method = RequestMethod.GET,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> getProducts(@RequestParam(value = "page", required = false) Integer page,
+    public ResponseEntity<Page<Product>> getProducts(@RequestParam(value = "page", required = false) Integer page,
                                                        @RequestParam(value = "size", required = false) Integer size) {
         if (page == null || size == null) {
             page = 1;
@@ -47,15 +43,14 @@ public class ProductController {
 
         Page<Product> products = this.productQuery.findAll(page, size);
         if (page > products.getTotalPages()) {
-            throw BadRequestException.create("Page number {0} should not be greater that total number of pages", page);
+            throw NotFoundServiceException.create("Page number does not exist");
         }
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @RequestMapping( value = "/{productId}", method = RequestMethod.GET,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> getProduct( @PathVariable("productId") String productId ) {
+    public ResponseEntity<Product> getProduct( @PathVariable("productId") String productId ) {
         Product product = this.productQuery.findById(productId);
         if (product == null ) {
             throw NotFoundServiceException.create("Product with id:{0} does not exist", productId);
@@ -66,19 +61,18 @@ public class ProductController {
     @RequestMapping( value = "/{productId}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Object> updateProduct( @RequestBody Product product,
+    public ResponseEntity<Product> updateProduct( @RequestBody Product product,
                                                  @PathVariable("productId") String productId ) {
         if (this.productQuery.findById(productId) == null) {
-            throw NotFoundServiceException.create("Product with id:{} does not exist", productId);
+            throw NotFoundServiceException.create("Product with id:{0} does not exist", productId);
         }
         Product updatedProduct= this.productCommand.updateProductCommand(product);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
     @RequestMapping( value = "/{productId}", method = RequestMethod.DELETE,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<Product> deleteProduct( @PathVariable("productId") String productId ) {
+    public ResponseEntity<HttpStatus> deleteProduct( @PathVariable("productId") String productId ) {
         this.productCommand.deleteProductCommand(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

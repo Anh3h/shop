@@ -1,0 +1,22 @@
+version: '2.1'
+
+services:
+  docker-mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=shop
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+  shop:
+    image: g00glen00b/spring-boot-jpa-docker-webapp
+    depends_on:
+      - docker-mysql
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=docker-mysql
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=mysql
+      - DATABASE_NAME=shop
+      - DATABASE_PORT=3306
