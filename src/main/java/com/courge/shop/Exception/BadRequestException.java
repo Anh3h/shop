@@ -1,7 +1,5 @@
 package com.courge.shop.Exception;
 
-import lombok.Getter;
-
 import java.text.MessageFormat;
 
 public class BadRequestException extends RuntimeException {

@@ -1,4 +1,5 @@
-version: '2.1'
+
+version: '3'
 
 services:
   docker-mysql:
@@ -6,10 +7,9 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=shop
-      - MYSQL_USER=mysql
       - MYSQL_PASSWORD=mysql
   shop:
-    image: g00glen00b/spring-boot-jpa-docker-webapp
+    image: shop
     depends_on:
       - docker-mysql
     ports:
